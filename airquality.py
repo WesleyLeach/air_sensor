@@ -35,7 +35,7 @@ def main(parsed_args):
         logging.debug(json.dumps(output_dict, indent=4))
         with open(output_file, 'a') as out_file:
             out_file.write(json.dumps(output_dict, indent=4))
-        time.sleep(10)
+        time.sleep(parsed_args.rate)
 
 
 if __name__ == "__main__":
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         action='store',
         required=False,
         default="INFO",
-        choices= [
+        choices=[
             "DEBUG",
             "WARN",
             "INFO",
@@ -62,7 +62,9 @@ if __name__ == "__main__":
         action='store',
         help="Sample rate for sensor.",
         required=False,
-        choices= [
+        default=10,
+        type= int,
+        choices=[
           3,
           10,
           15,

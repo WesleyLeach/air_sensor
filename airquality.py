@@ -13,7 +13,7 @@ import logging
 import serial, time
 
 
-def main():
+def main(parsed_args):
     '''
     Main Driver if called alone.
     '''
@@ -27,8 +27,8 @@ def main():
         pmten = int.from_bytes(b''.join(data[4:6]), byteorder='little') /10
         output_dict = {
             'timestamp': datetime.now().isoformat(),
-            'sensor_name': '',
-            'sensor_location': '',
+            'sensor_name': parsed_args.name,
+            'sensor_location': parsed_args.location,
             'pm_2_5': pmtofive,
             'pm_ten': pmten
         }
@@ -40,7 +40,7 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        add_help=False,
+        add_help=True,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
@@ -57,12 +57,41 @@ if __name__ == "__main__":
             "ERROR"
         ]
     )
+    parser.add_argument(
+        '--rate',
+        action='store',
+        help="Sample rate for sensor.",
+        required=False,
+        choices= [
+          3,
+          10,
+          15,
+          30,
+          60,
+          300,
+          600,
+        ]
+    )
+    parser.add_argument(
+        '--location',
+        action='store',
+        help="Location meta-data for sensor",
+        required=False,
+        default="",
+    )
+    parser.add_argument(
+        '--name',
+        action='store',
+        help="Name meta-data for sensor",
+        required=False,
+        default="",
+    )
     args = parser.parse_args()
     logging.basicConfig(
         level=args.logging,
         datefmt='%H:%M:%S'
     )
-    main()
+    main(args)
 
 
 

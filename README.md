@@ -19,7 +19,7 @@ A repository for the code and documentation for the SDS011 air sensor.
 ## Air Quality Index
 
 | Range | PM 2.5 / 10 
-|---|---|---|
+|---|---|
 | 0 to 50 | Healthy air quality
 | 51 to 100 | Moderate, not uncommon in some cities
 | 101 to 150 | Unhealthy for sensitive groups, limit activity

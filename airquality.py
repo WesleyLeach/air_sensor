@@ -17,17 +17,24 @@ def main():
     '''
     Main Driver if called alone.
     '''
+    # Note this should point to whichever serial connection exists
+    # for your sensor
     ser = serial.Serial('/dev/ttyUSB0')
+    output_file = "/var/log/air_quality.log"
     while True:
         data = [ser.read() for _ in range(10) ]
         pmtofive = int.from_bytes(b''.join(data[2:4]), byteorder='little') /10
         pmten = int.from_bytes(b''.join(data[4:6]), byteorder='little') /10
         output_dict = {
             'timestamp': datetime.now().isoformat(),
+            'sensor_name': '',
+            'sensor_location': '',
             'pm_2_5': pmtofive,
             'pm_ten': pmten
         }
         logging.debug(json.dumps(output_dict, indent=4))
+        with open(output_file, 'a') as out_file:
+            out_file.write(json.dumps(output_dict, indent=4))
         time.sleep(10)
 
 
